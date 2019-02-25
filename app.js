@@ -42,6 +42,7 @@
 
     var Field = function() {
         this.content = [];
+        let isRunning;
     };
 
     Field.prototype.initContents = function(length) {
@@ -133,6 +134,7 @@
         myField.initContents(genSize);
         myField.genContents();
         myField.drawContents();
+        myField.isRunning = false;
         return;
     }
 
@@ -154,12 +156,21 @@
     });
 
     function autoRun() {
-        onestep();
-        setTimeout(autoRun, 1000);
+        if (myField.isRunning) {
+            onestep();
+            setTimeout(autoRun, 1000);
+        }
         return;
     };
     let run = document.getElementById('run');
     run.addEventListener("click", function() {
-        autoRun();
+        if (myField.isRunning) {
+            run.value = "RUN";
+            myField.isRunning = false;
+        } else {
+            run.value = "STOP";
+            myField.isRunning = true;
+            autoRun();
+        }
     });
 }) ();
